@@ -29,13 +29,15 @@
 #===============================================================================
 # Name:        TiTxtParser.py
 #
-# Descriptoin: TI-TXT file parser
+# Description: TI-TXT file parser
 #
 # Author:      Leo Hendrawan
 #
 # Version:     0.1
 #
 # Licence:     New BSD license
+#
+# Note:
 #
 # Log:
 #     - Version 0.1 (2013.02.21) :
@@ -46,7 +48,6 @@
 
 import sys
 import optparse
-import array
 
 #===============================================================================
 # TI-TXT class
@@ -91,7 +92,7 @@ class TiTxtParser:
     #---------------------------------------------------------------------------
     def get_start_addr(self):
         start_addr = -1
-        for addr in content.keys():
+        for addr in self.content.keys():
             if(start_addr == -1):
                 # first iteration
                 start_addr = addr
@@ -106,7 +107,7 @@ class TiTxtParser:
     #---------------------------------------------------------------------------
     def get_end_addr(self):
         end_addr = -1
-        for addr in content.keys():
+        for addr in self.content.keys():
             if(end_addr == -1):
                 # first iteration
                 end_addr = addr
@@ -117,7 +118,7 @@ class TiTxtParser:
 
         # add the length
         if(end_addr != -1):
-            end_addr += len(content[end_addr]) - 1
+            end_addr += len(self.content[end_addr]) - 1
         return end_addr
 
     #---------------------------------------------------------------------------
