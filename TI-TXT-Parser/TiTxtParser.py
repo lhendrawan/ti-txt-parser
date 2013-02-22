@@ -40,7 +40,7 @@
 # Note:
 #
 # Log:
-#     - Version 0.1 (2013.02.21) :
+#     - Version 0.1 (2013.02.22) :
 #       Hello World! (created)
 #
 #===============================================================================
@@ -125,14 +125,17 @@ class TiTxtParser:
     # parse the TI-TXT file
     #---------------------------------------------------------------------------
     def parse(self):
+        if(self.verbose_mode == True):
+            print "\n== Parsing TI-TXT File:", self.file_name, " =="
+
         # try to open input file
         try:
             if(self.verbose_mode == True):
-                print "\nOpening TI-TXT File: ", self.file_name
+                print "Opening TI-TXT File: ", self.file_name
             file = open(self.file_name, 'r')
         except:
             if(self.verbose_mode == True):
-                print "\nError in opening TI-TXT file ", self.file_name
+                print "Error in opening TI-TXT file ", self.file_name
             return {}
 
         # start parsing
@@ -180,6 +183,9 @@ class TiTxtParser:
     # file the empty memory of TI-TXT file content
     #---------------------------------------------------------------------------
     def fill(self, start_addr, end_addr, fill_byte):
+        if(self.verbose_mode == True):
+            print "\n== Filling memory range =="
+
         # initialize variable
         full_content = {}
 
@@ -197,10 +203,9 @@ class TiTxtParser:
 
         # print start message
         if(self.verbose_mode == True):
-            print "\nFilling memory range"
             print "Start Addr:", hex(start_addr)
             print "End Addr:", hex(end_addr)
-            print "Fill byte ", hex(fill_byte)
+            print "Fill byte:", hex(fill_byte), "\n"
 
         # now we can work - make a list of key addresses of the TI-TXT
         # original content
@@ -234,6 +239,65 @@ class TiTxtParser:
 
         # return
         return full_content
+
+    #---------------------------------------------------------------------------
+    # print data into TI-TXT file format
+    #---------------------------------------------------------------------------
+    def print_ti_txt(self, file_name, data):
+        if(self.verbose_mode == True):
+            print "\n== Print out TI-TXT file:", file_name, "=="
+
+        # check for data type (must be dictionary):
+        if(type(data) != dict):
+            if(self.verbose_mode == True):
+                print "Invalid input data type:", type(data)
+            return False
+
+        # try to open file
+        try:
+            if(self.verbose_mode == True):
+                print "Opening file in write mode"
+            file = open(file_name, 'w')
+        except:
+            if(self.verbose_mode == True):
+                print "Failed to open file in write mode"
+            return False
+
+        # start writing file
+        for addr in data:
+            # write starting address
+            if(self.verbose_mode == True):
+                print "Writing memory starting from address ", hex(addr)
+            line = "@" + hex(addr).lstrip("0x") + "\n"
+            file.write(line);
+
+            # write bytes, maximum 16 bytes per line
+            idx = 0
+            line = ""
+            for datum in data[addr]:
+                line += "%02x" % datum + " "
+                idx += 1
+                if(idx == 16):
+                    # write line to file
+                    line += "\n"
+                    file.write(line)
+                    # prepare new line
+                    line = ""
+                    idx = 0
+
+            # check if it is necessary to print addition new line
+            if(idx != 0):
+                file.write("\n")
+
+            #print end of file
+            file.write("q\n")
+
+            #close file
+            file.close()
+            if(self.verbose_mode == True):
+                print "Finished writing TI-TXT file"
+            return True
+
 
     #---------------------------------------------------------------------------
     # Debug print TI-TXT file content
@@ -328,6 +392,15 @@ if __name__ == '__main__':
             ti_txt.debug_print_full_content(full_content)
         except:
             print "Error on testing filling function"
+            sys.exit(1)
+
+    # print filled data to a TI-TXT format file
+    file_name_and_ext = options.file_name.split(".")
+    new_file_name = file_name_and_ext[0] + "_filled." + file_name_and_ext[1]
+    res = ti_txt.print_ti_txt(new_file_name, full_content)
+    if (res != True):
+        print "Failed to write filled TI-TXT!"
+        sys.exit(1)
 
     # exit
     sys.exit(0)

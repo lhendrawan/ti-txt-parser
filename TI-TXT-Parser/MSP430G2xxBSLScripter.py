@@ -38,10 +38,10 @@
 #
 # Licence:     BSD license
 #
-# Note:        This module requires pyserial
+# Note:        This module requires pyserial (http://pyserial.sourceforge.net/)
 #
 # Log:
-#     - Version 0.1 (2013.02.21) :
+#     - Version 0.1 (2013.02.22) :
 #       Hello World! (created)
 #
 #===============================================================================
@@ -133,14 +133,30 @@ class MSP430G2xxBslScripter:
             return False
         #ti_txt.debug_print_full_content(full_content)
 
+        if(self.verbose_mode == True):
+            print "\n== Flashing Target Device =="
+
         # try to open the serial-port
-        ser = serial.Serial(self.serial_port, timeout=5)
+        try:
+            if(self.verbose_mode == True):
+                print "Opening Serial Port:", self.serial_port
+            ser = serial.Serial(self.serial_port, timeout=5)
+        except:
+            if(self.verbose_mode == True):
+                print "Failed to open serial port"
+            return False
 
         # send CMD_SYNC byte
+        if(self.verbose_mode == True):
+            print "Sending SYNC byte (", hex(CMD_SYNC),")"
         ser.write(('' + chr(CMD_SYNC)))
         time.sleep(SLEEP_1MS * 100) # device needs time to rewrite int.vector
 
-        # send the bytes and calculate checksum while sending
+        # send the data bytes and calculate checksum while sending
+        if(self.verbose_mode == True):
+            data_len = len(range(self.start_addr, 0xFFFE))
+            print "Sending binary data - length:", data_len, "(",
+            print hex(data_len), ") bytes"
         chksum = 0
         for addr in range(self.start_addr, 0xFFFE):
             byte = full_content[self.start_addr][addr-self.start_addr]
@@ -149,13 +165,23 @@ class MSP430G2xxBslScripter:
             chksum ^= byte
 
         # send checksum
+        if(self.verbose_mode == True):
+            print "Sending checksum byte (", hex(chksum),")"
         ser.write(('' + chr(chksum)))
+        time.sleep(SLEEP_1MS * 5) # sleep 5 ms between sending bytes
 
         # wait for reply
+        if(self.verbose_mode == True):
+        	print "Reading reply from target"
         byte = ser.read()
+        ser.close()
         if(byte == chr(ACK)):
+            if(self.verbose_mode == True):
+                print "received ACK"
             return True
         else:
+            if(self.verbose_mode == True):
+            	print "received NACK"
             return False
 
 #===============================================================================
