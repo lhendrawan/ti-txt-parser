@@ -3,8 +3,6 @@ set INPUT_FILE=test_blink.txt
 set COM_PORT=COM68
 set DEV_START_ADDR=0xF800
 
-echo %PYTHONPATH%
-
 echo ----------------------------------------------------------
 echo Simple example for flashing TI-TXT file to MSP430G2xx BSL
 echo ----------------------------------------------------------
