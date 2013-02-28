@@ -3,7 +3,7 @@
 *
 * TI-TXT-Parser - Python Script file for parsing TI-TXT file format
 *
-* version : 0.1
+* version : 0.2
 *
 ******************************************************************************/
 

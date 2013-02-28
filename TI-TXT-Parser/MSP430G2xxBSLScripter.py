@@ -34,7 +34,7 @@
 #
 # Author:      Leo Hendrawan
 #
-# Version:     0.1
+# Version:     0.2
 #
 # Licence:     BSD license
 #
@@ -43,6 +43,8 @@
 # Log:
 #     - Version 0.1 (2013.02.22) :
 #       Hello World! (created)
+#     - Version 0.2 (yyyy.mm.dd) :
+#       minor modification to suit TiTxtParser v0.2
 #
 #===============================================================================
 #!/usr/bin/env python
@@ -115,10 +117,10 @@ class MSP430G2xxBslScripter:
     #---------------------------------------------------------------------------
     def flash_target(self):
         # create new instance of TI-TXT class
-        ti_txt = TiTxtParser(self.file_name, self.verbose_mode)
+        ti_txt = TiTxtParser(self.verbose_mode)
 
         # parse the TI-TXT
-        content = ti_txt.parse()
+        content = ti_txt.parse(self.file_name)
         if(content == {}):
             if(self.verbose_mode == True):
                 print "Failed to parse TI-TXT file:", options.file_name
@@ -126,7 +128,7 @@ class MSP430G2xxBslScripter:
         #ti_txt.debug_print_content()
 
         # try to fill the data
-        full_content = ti_txt.fill(self.start_addr, 0xFFFF, 0xFF)
+        full_content = ti_txt.fill(content, self.start_addr, 0xFFFF, 0xFF)
         if(full_content == {}):
             if(self.verbose_mode == True):
                 print "Failed to fill TI-TXT file"
@@ -140,11 +142,15 @@ class MSP430G2xxBslScripter:
         try:
             if(self.verbose_mode == True):
                 print "Opening Serial Port:", self.serial_port
-            ser = serial.Serial(self.serial_port, timeout=5)
+            ser = serial.Serial(self.serial_port)
         except:
             if(self.verbose_mode == True):
                 print "Failed to open serial port"
             return False
+
+        # flush input output
+        ser.flushInput()
+        ser.flushOutput()
 
         # send CMD_SYNC byte
         if(self.verbose_mode == True):
