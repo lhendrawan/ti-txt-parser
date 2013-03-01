@@ -1,0 +1,7 @@
+@fe00
+C0 FF EE
+@10000
+EE FF C0
+@12000
+AB CD EF
+q

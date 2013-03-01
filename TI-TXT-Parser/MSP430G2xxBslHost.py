@@ -27,14 +27,14 @@
 #===============================================================================
 
 #===============================================================================
-# Name:        MSP430G2xxBslScripter.py
+# Name:        MSP430G2xxBslHost.py
 #
-# Description: BSL Scripter like python script for MSP430G2xx BSL as described
+# Description: BSL host python script for MSP430G2xx BSL as described
 #              in SLAA450 Application Notea of Texas Instruments
 #
 # Author:      Leo Hendrawan
 #
-# Version:     0.2
+# Version:     0.3
 #
 # Licence:     BSD license
 #
@@ -43,8 +43,10 @@
 # Log:
 #     - Version 0.1 (2013.02.22) :
 #       Hello World! (created)
-#     - Version 0.2 (yyyy.mm.dd) :
+#     - Version 0.2 (2013.02.28) :
 #       minor modification to suit TiTxtParser v0.2
+#     - Version 0.3 (2013.03.01) :
+#       name changed to MSP430G2xxBslHost
 #
 #===============================================================================
 #!/usr/bin/env python
@@ -65,9 +67,9 @@ NACK = 0xFE
 SLEEP_1MS = 0.001 # 1ms
 
 #===============================================================================
-# MSP430G2xxBslScripter class
+# MSP430G2xxBslHost class
 #===============================================================================
-class MSP430G2xxBslScripter:
+class MSP430G2xxBslHost:
     #---------------------------------------------------------------------------
     # Class variables
     #---------------------------------------------------------------------------
@@ -142,7 +144,7 @@ class MSP430G2xxBslScripter:
         try:
             if(self.verbose_mode == True):
                 print "Opening Serial Port:", self.serial_port
-            ser = serial.Serial(self.serial_port)
+            ser = serial.Serial(self.serial_port, timeout=8)
         except:
             if(self.verbose_mode == True):
                 print "Failed to open serial port"
@@ -183,11 +185,11 @@ class MSP430G2xxBslScripter:
         ser.close()
         if(byte == chr(ACK)):
             if(self.verbose_mode == True):
-                print "received ACK"
+                print "received ACK - SUCCESS"
             return True
         else:
             if(self.verbose_mode == True):
-            	print "received NACK"
+            	print "received NACK - ERROR"
             return False
 
 #===============================================================================
@@ -224,7 +226,7 @@ if __name__ == '__main__':
         sys.exit(1)
 
     # create new instance of TI-TXT class
-    bsl = MSP430G2xxBslScripter(options.serial_port, options.file_name,
+    bsl = MSP430G2xxBslHost(options.serial_port, options.file_name,
                 options.start_addr, options.verbose)
 
     # flash target device

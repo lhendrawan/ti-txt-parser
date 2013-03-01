@@ -33,7 +33,7 @@
 #
 # Author:      Leo Hendrawan
 #
-# Version:     0.2
+# Version:     0.3
 #
 # Licence:     New BSD license
 #
@@ -42,11 +42,13 @@
 # Log:
 #     - Version 0.1 (2013.02.22) :
 #       Hello World! (created)
-#     - Version 0.2 (yyyy.mm.dd):
+#     - Version 0.2 (2013.02.28):
 #        * removing class variables file_name and content to make TiTxtParser
 #          class more flexible (e.g. for join() method)
 #        * removing debug_print_full_content method
 #        * adding join() method
+#     - Version 0.3 (2013.03.01):
+#        * bug fix in the print_ti_txt() and fill() method
 #
 #===============================================================================
 #!/usr/bin/env python
@@ -258,6 +260,16 @@ class TiTxtParser:
             # update start address
             addr_idx += len(content[addr])
 
+        # fill the end if necessary
+        if(addr_idx != end_addr):
+            if(self.verbose_mode == True):
+                print "Filling empty byte(s) from address", hex(addr_idx),
+                print "to address ", hex(end_addr)
+            loop = range(addr_idx, end_addr)
+            for i in loop:
+                full_content[start_addr].append(fill_byte)
+                addr_idx += 1
+
         # return
         return full_content
 
@@ -319,8 +331,12 @@ class TiTxtParser:
                 print "Failed to open file in write mode"
             return False
 
+        # sort the content address
+        addr_sorted = content.keys()
+        addr_sorted.sort()
+
         # start writing file
-        for addr in content:
+        for addr in addr_sorted:
             # write starting address
             if(self.verbose_mode == True):
                 print "Writing memory starting from address ", hex(addr)
@@ -330,8 +346,8 @@ class TiTxtParser:
             # write bytes, maximum 16 bytes per line
             idx = 0
             line = ""
-            for datum in content[addr]:
-                line += "%02x" % datum + " "
+            for byte in content[addr]:
+                line += "%02x" % byte + " "
                 idx += 1
                 if(idx == 16):
                     # write line to file
@@ -341,18 +357,19 @@ class TiTxtParser:
                     line = ""
                     idx = 0
 
-            # check if it is necessary to print addition new line
+            # flush data
             if(idx != 0):
-                file.write("\n")
+                line += "\n"
+                file.write(line)
 
-            #print end of file
-            file.write("q\n")
+        #print end of file
+        file.write("q\n")
 
-            #close file
-            file.close()
-            if(self.verbose_mode == True):
-                print "Finished writing TI-TXT file"
-            return True
+        #close file
+        file.close()
+        if(self.verbose_mode == True):
+            print "Finished writing TI-TXT file"
+        return True
 
 
     #---------------------------------------------------------------------------
@@ -426,11 +443,14 @@ if __name__ == '__main__':
     if(content == {}):
         print "Failed to parse TI-TXT file:", options.file_name
         sys.exit(1)
-    #ti_txt.debug_print_content(content)
+    if(options.verbose == True):
+        ti_txt.debug_print_content(content)
 
     # check if there is secondary input file to be joined
     if(options.join_file_name != None):
         content2 = ti_txt.parse(options.join_file_name)
+        if(options.verbose == True):
+            ti_txt.debug_print_content(content2)
         try:
             content = ti_txt.join(content, content2)
         except:
@@ -445,13 +465,16 @@ if __name__ == '__main__':
         try:
             full_content = ti_txt.fill(content, options.start_addr,
                 options.end_addr, 0xFF)
-            ti_txt.debug_print_content(full_content)
         except:
             print "Error on testing filling function"
             sys.exit(1)
+    else:
+        full_content = content
 
     # print filled data to a TI-TXT format file
     if(options.out_file_name != None):
+        if(options.verbose == True):
+            ti_txt.debug_print_content(full_content)
         res = ti_txt.print_ti_txt(options.out_file_name, full_content)
         if (res != True):
             print "Failed to write output filled TI-TXT file!"
