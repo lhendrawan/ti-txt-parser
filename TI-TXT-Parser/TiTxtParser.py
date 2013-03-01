@@ -261,7 +261,7 @@ class TiTxtParser:
             addr_idx += len(content[addr])
 
         # fill the end if necessary
-        if(addr_idx != end_addr):
+        if(addr_idx < end_addr):
             if(self.verbose_mode == True):
                 print "Filling empty byte(s) from address", hex(addr_idx),
                 print "to address ", hex(end_addr)
