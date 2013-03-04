@@ -3,7 +3,7 @@
 *
 * TI-TXT-Parser - Python Script file for parsing TI-TXT file format
 *
-* version : 0.2
+* version : 0.3
 *
 ******************************************************************************/
 
@@ -30,6 +30,18 @@ TODO
   |
   |- Examples : project code and examples
   |   |
-  |   |- MSP430G2xx3: batch file example for MSP430G2xx3 family
+  |   |- Calculate_PSA_Checksum : script file example for calculating PSA
+  |   |                           (Pseudo Signature Analysis) checksum which 
+  |   |                           is used e.g. by MSP-GANG430
+  |   |
+  |   |- MSP430G2xx3_BSL: script file example for using MSP430G2xxBslHost 
+  |   |                   python code with the MSP430G2xx3 MCU family on 
+  |   |                   MSP-EXP430G2 Launchpad development board
+  |   |
+  |   |- Parse_and_Fill : script file example for using TiTxtParser to 
+  |   |                   parse and fill TI-TXT files
+  |   |
+  |   |- Parse_and_Join : script file example for using TiTxtParser to
+  |                       join two TI-TXT input files
   |    
   |- TI-TXT-Parser: source code of TI-TXT-Parser

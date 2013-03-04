@@ -1,7 +1,7 @@
 @echo off
 set INPUT_FILE1=test_blink1.txt
 set INPUT_FILE2=test_blink2.txt
-set COM_PORT=COM68
+set COM_PORT=COM84
 set DEV_START_ADDR=0xF800
 
 echo ----------------------------------------------------------
@@ -15,11 +15,11 @@ echo[
 echo Flashing %INPUT_FILE1%
 echo Reset device and make sure that target device enters BSL mode!!
 pause
-python ../../TI-TXT-Parser/MSP430G2xxBslHost.py -f %INPUT_FILE1% -v -s %DEV_START_ADDR% -p %COM_PORT%
+MSP430G2xxBslHost.exe -f %INPUT_FILE1% -v -s %DEV_START_ADDR% -p %COM_PORT%
 echo[
 echo Flashing %INPUT_FILE2%
 echo Reset device and make sure that target device enters BSL mode!!
 pause
-python ../../TI-TXT-Parser/MSP430G2xxBslHost.py -f %INPUT_FILE2% -v -s %DEV_START_ADDR% -p %COM_PORT%
+MSP430G2xxBslHost.exe -f %INPUT_FILE2% -v -s %DEV_START_ADDR% -p %COM_PORT%
 echo[
 pause
