@@ -2,7 +2,7 @@
 set INPUT_FILE=input.txt
 set LOG_FILE=log.txt
 set DEV_START_ADDR=0x5C00
-set DEV_END_ADDR=0x10100
+set DEV_END_ADDR=0xFFFF
 
 echo --------------------------------------------------------------
 echo Simple example for calculating PSA checksum of TI-TXT files

@@ -255,8 +255,7 @@ class TiTxtParser:
             if(self.verbose_mode == True):
                 print "Copying ", len(content[addr]),
                 print "bytes data from address ", hex(addr)
-            for byte in content[addr]:
-                full_content[start_addr].append(byte)
+            full_content[start_addr] = full_content[start_addr] + content[addr]
             # update start address
             addr_idx += len(content[addr])
 
@@ -377,7 +376,7 @@ class TiTxtParser:
     #---------------------------------------------------------------------------
     def debug_print_content(self, content):
         try:
-            print "\n==Print out TI-TXT content=="
+            print "\n== Print out TI-TXT content =="
             start_addresses = content.keys()
             start_addresses.sort()
             for start_addr in start_addresses:

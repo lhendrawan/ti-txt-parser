@@ -73,15 +73,17 @@ def CalcPSA(file_name, start_addr, end_addr, verbose):
     # try to fill the data
     full_content = ti_txt.fill(content, start_addr, end_addr, 0xFF)
     if(full_content == {}):
-        if(self.verbose_mode == True):
+        if(verbose == True):
             print "Failed to fill TI-TXT file"
         return None
 
     # calculate the checksum
+    if(verbose == True):
+        print "\n== Calculating PSA Checksum =="
     psa_chksum = start_addr - 2
     for byte in full_content[(full_content.keys())[0]]:
         if((psa_chksum & 0x8000) != 0):
-            psa_chksum = (psa_chksum ^ 0x0805) << 1 | 1
+            psa_chksum = ((psa_chksum ^ 0x0805) << 1) | 1
         else:
             psa_chksum = psa_chksum << 1
         psa_chksum = (psa_chksum ^ byte) & 0xFFFFFFFF
@@ -124,7 +126,6 @@ if __name__ == '__main__':
         sys.exit(1)
 
     # calculate checksum
-    print "\n== Calculating PSA Checksum =="
     checksum = CalcPSA(options.file_name, options.start_addr,
                 options.end_addr, options.verbose)
 
