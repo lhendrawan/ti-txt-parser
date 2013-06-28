@@ -125,7 +125,7 @@ class MSP430G2xxBslHost:
         content = ti_txt.parse(self.file_name)
         if(content == {}):
             if(self.verbose_mode == True):
-                print "Failed to parse TI-TXT file:", options.file_name
+                print "Failed to parse TI-TXT file:", self.file_name
             return False
         #ti_txt.debug_print_content()
 

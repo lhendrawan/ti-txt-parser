@@ -27,10 +27,10 @@
 #===============================================================================
 
 #===============================================================================
-# Name:        CalcPSA.py
+# Name:        CalcMspGangChksum.py
 #
 # Description: Simple example python file to use TiTxtParser and calculate
-#              memory content using PSA method
+#              the checksum as is used in MSP-GANG
 #
 # Author:      Leo Hendrawan
 #
@@ -38,7 +38,9 @@
 #
 # Licence:     BSD license
 #
-# Note:
+# Note:        The code for calculating the MSP-GANG checksum is derived from 
+#              MSP-GANG User's Guide (SLAU358D)
+#
 #
 # Log:
 #     - Version 0.3 (2013.03.01) :
@@ -51,15 +53,14 @@ import sys
 import optparse
 from TiTxtParser import TiTxtParser
 
-
 #===============================================================================
 # Constants
 #===============================================================================
 
 #===============================================================================
-# Calculate PSA function
+# Calculate MSP-GANG Checksum function
 #===============================================================================
-def CalcPSA(file_name, start_addr, end_addr, verbose):
+def CalcMspGangChksum(file_name, verbose):
     # create new instance of TI-TXT class
     ti_txt = TiTxtParser(verbose)
 
@@ -70,26 +71,26 @@ def CalcPSA(file_name, start_addr, end_addr, verbose):
             print "Failed to parse TI-TXT file:", file_name
         return None
 
-    # try to fill the data
-    full_content = ti_txt.fill(content, start_addr, end_addr, 0xFF)
-    if(full_content == {}):
-        if(verbose == True):
-            print "Failed to fill TI-TXT file"
-        return None
-
     # calculate the checksum
     if(verbose == True):
-        print "\n== Calculating PSA Checksum =="
-    psa_chksum = start_addr - 2
-    for byte in full_content[(full_content.keys())[0]]:
-        if((psa_chksum & 0x8000) != 0):
-            psa_chksum = ((psa_chksum ^ 0x0805) << 1) | 1
-        else:
-            psa_chksum = psa_chksum << 1
-        psa_chksum = (psa_chksum ^ byte) & 0xFFFFFFFF
+        print "\n== Calculating MSP-GANG CS =="
+    cs = 0
+    start_addresses = content.keys()
+    start_addresses.sort()
+    for start_addr in start_addresses:
+        i = 0
+        for byte in content[start_addr]:
+            if (i == 0):
+                cs = cs + byte
+                i = 1
+            else:
+                cs = cs + (byte * 256)
+                i = 0
+        if(i == 1):
+            cs = cs + (0xFF * 256)
 
     # return the calculated checksum
-    return psa_chksum
+    return cs
 
 
 #===============================================================================
@@ -103,38 +104,23 @@ if __name__ == '__main__':
             metavar="FILE")
     cmd_line_parser.add_option("-v", "--verbose", action="store_true",
             dest="verbose", help="actiate verbose mode")
-    cmd_line_parser.add_option("-s", "--start", action="store", type="int",
-            dest="start_addr", help="flash start address with value of SADDR",
-            metavar="SADDR")
-    cmd_line_parser.add_option("-e", "--end", action="store", type="int",
-            dest="end_addr", help="end address with value of EADDR",
-            metavar="EADDR")
     (options, args) = cmd_line_parser.parse_args()
 
     # check given input file name parameter
     if(options.file_name == None):
-        print "Input TI-TXT file name is missing!"
-        cmd_line_parser.print_help()
-        sys.exit(1)
-    elif(options.start_addr == None):
-        print "Device flash start address is missing!"
-        cmd_line_parser.print_help()
-        sys.exit(1)
-    elif(options.end_addr == None):
-        print "Device flash end address is missing!"
+        print ("Input TI-TXT file name is missing!")
         cmd_line_parser.print_help()
         sys.exit(1)
 
     # calculate checksum
-    checksum = CalcPSA(options.file_name, options.start_addr,
-                options.end_addr, options.verbose)
+    crc = CalcMspGangChksum(options.file_name, options.verbose)
 
-    # check for valid checksum
-    if(checksum == None):
-        print "Fail to calculate PSA checksum!"
+    # check for valid cs
+    if(crc == None):
+        print "Fail to calculate checksum!"
         sys.exit(1)
     else:
-        print "Calculated PSA checksum:", hex(checksum)
+        print "Calculated MSP-GANG CRC checksum:", hex(crc)
 
     # exit
     sys.exit(0)

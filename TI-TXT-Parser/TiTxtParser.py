@@ -203,7 +203,7 @@ class TiTxtParser:
         return content
 
     #---------------------------------------------------------------------------
-    # file the empty memory of TI-TXT file content
+    # fill the empty memory of TI-TXT file content
     #---------------------------------------------------------------------------
     def fill(self, content, start_addr, end_addr, fill_byte):
         if(self.verbose_mode == True):
