@@ -47,8 +47,9 @@
 #          class more flexible (e.g. for join() method)
 #        * removing debug_print_full_content method
 #        * adding join() method
-#     - Version 0.3 (2013.03.01):
+#     - Version 0.3 (2013.06.29):
 #        * bug fix in the print_ti_txt() and fill() method
+#        * some typo bug fixes
 #
 #===============================================================================
 #!/usr/bin/env python
@@ -412,7 +413,7 @@ if __name__ == '__main__':
             dest="file_name", help="parse TI-TXT file with name FILE",
             metavar="FILE")
     cmd_line_parser.add_option("-v", "--verbose", action="store_true",
-            dest="verbose", help="actiate verbose mode")
+            dest="verbose", help="activate verbose mode")
     cmd_line_parser.add_option("-s", "--start", action="store", type="int",
             dest="start_addr", help="start address with value of SADDR",
             metavar="SADDR")

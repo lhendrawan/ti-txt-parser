@@ -45,8 +45,9 @@
 #       Hello World! (created)
 #     - Version 0.2 (2013.02.28) :
 #       minor modification to suit TiTxtParser v0.2
-#     - Version 0.3 (2013.03.01) :
-#       name changed to MSP430G2xxBslHost
+#     - Version 0.3 (2013.06.29) :
+#       * name changed to MSP430G2xxBslHost
+#       * some type bug fixes
 #
 #===============================================================================
 #!/usr/bin/env python
@@ -202,7 +203,7 @@ if __name__ == '__main__':
             dest="file_name", help="TI-TXT input file with name FILE",
             metavar="FILE")
     cmd_line_parser.add_option("-v", "--verbose", action="store_true",
-            dest="verbose", help="actiate verbose mode")
+            dest="verbose", help="activate verbose mode")
     cmd_line_parser.add_option("-p", "--port", action="store", type="string",
             dest="serial_port", help="serial port name with name PORT",
             metavar="PORT")
