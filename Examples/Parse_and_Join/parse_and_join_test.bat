@@ -18,6 +18,6 @@ echo - the contents of both files are then joined
 echo - the final result will be saved into TI-TXT format with the name of %OUTPUT_FILE%
 echo[
 echo The execution process output log can be found in %LOG_FILE%
-python ..\..\TI-TXT-Parser\TiTxtParser.py -f %INPUT_FILE% -v -o %OUTPUT_FILE% -j %INPUT_JOIN_FILE% > %LOG_FILE%
+python ..\..\Scripts\TiTxtParser.py -f %INPUT_FILE% -v -o %OUTPUT_FILE% -j %INPUT_JOIN_FILE% > %LOG_FILE%
 echo[
 pause

@@ -13,6 +13,6 @@ echo - %INPUT_FILE% is parsed
 echo - the checksum value used in MSP-GANG is then calculated
 echo[
 echo The execution process output log can be found in %LOG_FILE%
-python ..\..\TI-TXT-Parser\CalcMspGangChksum.py -f %INPUT_FILE% -v > %LOG_FILE%
+python ..\..\Scripts\CalcMspGangChksum.py -f %INPUT_FILE% -v > %LOG_FILE%
 echo[
 pause

@@ -30,9 +30,11 @@ TODO
   |
   |- Examples : project code and examples
   |   |
-  |   |- Calculate_PSA_Checksum : script file example for calculating PSA
-  |   |                           (Pseudo Signature Analysis) checksum which 
-  |   |                           is used e.g. by MSP-GANG430
+  |   |- Calculate_MSPGANG_CS: script file example for calculating checksum 
+  |   |                        which is used by MSP-GANG
+  |   |
+  |   |- Generate_Unique_ID: script file example for generating multiple output
+  |   |                      files with unique ID from a single input file
   |   |
   |   |- MSP430G2xx3_BSL: script file example for using MSP430G2xxBslHost 
   |   |                   python code with the MSP430G2xx3 MCU family on 
@@ -44,4 +46,4 @@ TODO
   |   |- Parse_and_Join : script file example for using TiTxtParser to
   |                       join two TI-TXT input files
   |    
-  |- TI-TXT-Parser: source code of TI-TXT-Parser
+  |- Scripts: source code of TI-TXT-Parser and example scripts

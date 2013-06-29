@@ -15,11 +15,11 @@ echo[
 echo Flashing %INPUT_FILE1%
 echo Reset device and make sure that target device enters BSL mode!!
 pause
-MSP430G2xxBslHost.exe -f %INPUT_FILE1% -v -s %DEV_START_ADDR% -p %COM_PORT%
+python ..\..\Scripts\MSP430G2xxBslHost.py -f %INPUT_FILE1% -v -s %DEV_START_ADDR% -p %COM_PORT%
 echo[
 echo Flashing %INPUT_FILE2%
 echo Reset device and make sure that target device enters BSL mode!!
 pause
-MSP430G2xxBslHost.exe -f %INPUT_FILE2% -v -s %DEV_START_ADDR% -p %COM_PORT%
+python ..\..\Scripts\MSP430G2xxBslHost.py -f %INPUT_FILE2% -v -s %DEV_START_ADDR% -p %COM_PORT%
 echo[
 pause

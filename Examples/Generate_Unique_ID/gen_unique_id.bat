@@ -18,7 +18,6 @@ echo - The 6 bytes unique ID at address 0x1000 will be checked
 echo - generating output file with last byte of the unique ID incremented
 echo[
 echo The execution process output log can be found in %LOG_FILE%
-echo python ..\..\TI-TXT-Parser\GenUniqueId.py -f %INPUT_FILE% -o %OUT_FILE% -n %NUM_OUT% -v > %LOG_FILE%
-python ..\..\TI-TXT-Parser\GenUniqueId.py -f %INPUT_FILE% -o %OUT_FILE% -n %NUM_OUT% -v > %LOG_FILE%
+python ..\..\Scripts\GenUniqueId.py -f %INPUT_FILE% -o %OUT_FILE% -n %NUM_OUT% -v > %LOG_FILE%
 echo[
 pause

@@ -18,6 +18,6 @@ echo - the parsed contents is then filled with empty bytes (0xFF) between %DEV_S
 echo - the final result will be saved into TI-TXT format with the name of %OUTPUT_FILE%
 echo[
 echo The execution process output log can be found in %LOG_FILE%
-python ..\..\TI-TXT-Parser\TiTxtParser.py -f %INPUT_FILE% -v -o %OUTPUT_FILE% -s %DEV_START_ADDR% -e %DEV_END_ADDR% > %LOG_FILE%
+python ..\..\Scripts\TiTxtParser.py -f %INPUT_FILE% -v -o %OUTPUT_FILE% -s %DEV_START_ADDR% -e %DEV_END_ADDR% > %LOG_FILE%
 echo[
 pause
