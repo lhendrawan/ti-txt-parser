@@ -79,7 +79,7 @@ OPEN_BSL_CMD_PASSWD = 0x09
 OPEN_BSL_CMD_JUMP_ADDR = 0x0A
 
 # sync command
-OPEN_BSL_CMD_SYNC = 0x80
+OPEN_BSL_CMD_SYNC = 0x90
 
 
 # response
@@ -203,8 +203,8 @@ class OpenBSLHost:
             return False
 
         # flush input output
-        self.serial_port.flushInput()
         self.serial_port.flushOutput()
+        self.serial_port.flushInput()
 
         return True
 
@@ -312,6 +312,9 @@ class OpenBSLHost:
         if(self.verbose_mode == True):
             print "Trying to send SYNC byte (", hex(OPEN_BSL_CMD_SYNC),")",
         while((retry < MAX_SYNC_RETRY) and (sync_ed == False)):
+            # flush buffers
+            self.serial_port.flushOutput()
+            self.serial_port.flushInput()
             #send command
             self.serial_port.write(('' + chr(OPEN_BSL_CMD_SYNC)))
             # wait for reply
