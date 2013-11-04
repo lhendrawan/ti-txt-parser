@@ -78,7 +78,7 @@ class MSP430G2xxBslHost:
     file_name = ""
     # flag for verbose mode
     verbose_mode = False
-    # TI-TXT content (dictionary)
+    # COM PORT number
     serial_port = ""
     # start address of device target flash memory
     start_addr = 0
@@ -98,10 +98,10 @@ class MSP430G2xxBslHost:
         self.verbose_mode = verbose
 
     #---------------------------------------------------------------------------
-    # setting com port name
+    # setting serial port name
     #---------------------------------------------------------------------------
-    def set_input_file(self, com):
-        self.com_port = com
+    def set_serial_port(self, ser):
+        self.serial_port = ser
 
     #---------------------------------------------------------------------------
     # setting input file name
